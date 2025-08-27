@@ -7,73 +7,103 @@
     <body>
         <h1>Formulario para agregar un aviso de adopción</h1>
     </body>
+    <!-- Primera tabla -->
     <table>
         <tr>
             <th>¿Dónde?</th>
         </tr>
         <tr>
             <td>Región</td>
-            <td>Menu de regiones</td>
+            <td><select id="region">
+                <option value="">-- Selecciona una Región --</option>
+            </select></td>
         </tr>
         <tr>
             <td>Comuna</td>
-            <td>Menu de comuna</td>
+            <td><select id="comuna">
+                <option value="">-- Selecciona una Comuna --</option>
+            </select></td>
         </tr>
         <tr>
             <td>Sector</td>
-            <td>Input</td>
+            <td><input type="text"></td>
         </tr>
     </table>
     <br>
+    <!-- Segunda tabla -->
     <table>
         <tr>
             <th>Contacto de esta publicación</th>
         </tr>
         <tr>
             <td>Nombre</td>
-            <td>input</td>
+            <td><input type="text"></td>
         </tr>
         <tr>
             <td>Email</td>
-            <td>input</td>
+            <td><input type="email"></td>
+        </tr>
+        <tr>
+            <td>Número de celular</td>
+            <td><input type="tel"></td>
         </tr>
         <tr>
             <td>Contactar por</td>
-            <td>Input</td>
+                <td><select>
+                <option>Whatsapp</option>
+                <option>Telegram</option>
+                <option>X</option>
+                <option>Instagram</option>
+                <option>Tiktok</option>
+                <option>Otra</option>
+            </select></td>
         </tr>
     </table>
     <br>
+    <!-- Tercera tabla -->
     <table>
         <tr>
             <th>¿Qué mascota ofrece en adopción?</th>
         </tr>
         <tr>
             <td>Tipo</td>
-            <td>perro o gato</td>
+            <td><select>
+                <option>Gato</option>
+                <option>Perro</option>
+            </select></td>
         </tr>
         <tr>
             <td>Cantidad</td>
-            <td>input</td>
+            <td><input type="number"></td>
         </tr>
         <tr>
             <td>Edad</td>
-            <td>Input</td>
+            <td><input type="number"></td>
         </tr>
         <tr>
             <td>Unidad medida edad</td>
-            <td>Input</td>
+            <td><select>
+                <option>Meses</option>
+                <option>Años</option>
+            </select></td>
         </tr>
         <tr>
             <td>Fecha disponible para entrega</td>
-            <td>Input</td>
+            <td><input type="datetime-local"></td>
         </tr>
         <tr>
             <td>Descripción</td>
-            <td>Input</td>
+            <td><textarea rows="10" cols="50"></textarea></td>
         </tr>
         <tr>
             <td>Foto</td>
-            <td>Input</td>
+            <td><input type="file"></td>
         </tr>
     </table>
+    <br>
+
+    <button>Agregar este aviso de adopción</button>
+    
+    <script lang="javascript" src="../js/region_comuna.js"></script>
+    <script lang="javascript" src="../js/agregar.js"></script>
 </html>
