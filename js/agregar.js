@@ -1,44 +1,3 @@
-// Seleccionar región
-const poblarRegiones = () => {
-  let regionSelect = document.getElementById("select-region");
-
-  for (const numero in region_comuna.regiones) {
-    let region = region_comuna.regiones[numero];
-    let option = document.createElement("option");
-    option.value = numero;
-    option.text = region.nombre;
-    regionSelect.appendChild(option);
-  }
-};
-
-const updateComunas = () => {
-  let regionSelect = document.getElementById("select-region");
-  let comunaSelect = document.getElementById("select-comuna");
-  let selectedNumero = regionSelect.value;
-
-  comunaSelect.innerHTML = '<option value="">-- Selecciona una Comuna --</option>';
-
-  let region = region_comuna.regiones[selectedNumero];
-  if (region) {
-    region.comunas.forEach(comuna => {
-      let option = document.createElement("option");
-      option.value = comuna;
-      option.text = comuna;
-      comunaSelect.appendChild(option);
-    });
-  }
-};
-
-document.getElementById("select-region").addEventListener("change", updateComunas);
-
-window.onload = () => {
-  poblarRegiones();
-  updateComunas();
-  changeArguments();
-};
-
-// Válidación ----------------------------------------------------------------------
-
 const validateName = (name) => {
   if(!name) return false;
   let lengthValid = name.trim().length >= 3 && name.trim().length <= 200;
@@ -71,28 +30,31 @@ const validatePhoneNumber = (phoneNumber) => {
   return lengthValid && formatValid;
 };
 
-const validateFiles = (files) => {
-  if (!files) return false;
+// valida cada foto agregada
+const validateFiles = (container) => {
+  if (!container) return false;
 
-  // validación del número de archivos
-  let lengthValid = 1 <= files.length && files.length <= 3;
+  let inputs = container.querySelectorAll("input[type='file']");
+  let totalFiles = 0;
 
-  // validación del tipo de archivo
-  let typeValid = true;
-
-  for (const file of files) {
-    // el tipo de archivo debe ser "image/<foo>" o "application/pdf"
-    let fileFamily = file.type.split("/")[0];
-    typeValid &&= fileFamily == "image" || file.type == "application/pdf";
+  for (let input of inputs) {
+    if (input.files) {
+      totalFiles += input.files.length;
+      for (let file of input.files) {
+        let fileFamily = file.type.split("/")[0];
+        if (!(fileFamily === "image" || file.type === "application/pdf")) {
+          return false;
+        }
+      }
+    }
   }
-
-  // devolvemos la lógica AND de las validaciones.
-  return lengthValid && typeValid;
+  return totalFiles >= 1 && totalFiles <= 3;
 };
+
 
 const validateSelect = (select) => {
   if(!select) return false;
-  return true
+  return true;
 }
 
 const validateSector = (sector) => {
@@ -102,38 +64,46 @@ const validateSector = (sector) => {
   return lengthValid;
 };
 
-const validateContact = (select, contactId) => {
-  if (!select) return true; 
-  if (!contactId) return false;
+// valida cada bloque nuevo de contactar por
+const validateContact = (contact) => {
+  let block = contact.querySelectorAll(".contactar_block");
 
-  return contactId.trim().length >= 4 && contactId.trim().length <= 50;
+  for (const blocks of block) {
+    let select = blocks.querySelector("select");
+    let textarea = blocks.querySelector("textarea");
+
+    // si no hay select o textarea en el bloque, saltamos
+    if (!select || !textarea) continue;
+
+    if (validateSelect(select.value)) {
+      let textLength = textarea.value.trim().length;
+      if (textLength < 4 || textLength > 50) return false;
+    }
+  }
+  return true;
 };
 
-const validateEdad = (edad) => {
+// valida edad y cantidad
+const validateEdad_Cantidad = (edad) => {
   if (!edad) return false;
-  let re = /^[1-9]\d*$/; // uno o más dígitos, empieza en 1S
+  let re = /^[1-9]\d*$/; // uno o más dígitos, empieza en 1
   return re.test(edad);
 }
 
-const validateFotos = (files) => {
-  if (!files) return false;
+const validateFecha = (fecha) => {
+  if (!fecha) return false; 
 
-  // validación del número de archivos
-  let lengthValid = 1 <= files.length && files.length <= 5;
+  let re = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+  if (!re.test(fecha)) return false;
 
-  // validación del tipo de archivo
-  let typeValid = true;
+  let inputDate = new Date(fecha); // fecha y hora actual
 
-  for (const file of files) {
-    // el tipo de archivo debe ser "image/<foo>"
-    let fileFamily = file.type.split("/")[0];
-    typeValid &&= fileFamily === "image";
-  }
+  // fecha mínima = ahora + 3 horas
+  let minDate = new Date();
+  minDate.setHours(minDate.getHours() + 3);
 
-  // devolvemos la lógica AND de las validaciones
-  return lengthValid && typeValid;
+  return inputDate >= minDate;
 };
-
 
 const validateForm = () => {
   // obtener elementos del DOM usando el nombre del formulario.
@@ -141,7 +111,7 @@ const validateForm = () => {
   let email = myForm["email"].value;
   let phoneNumber = myForm["phone"].value;
   let name = myForm["nombre"].value;
-  let fotos = myForm["files"].files;
+  let fotos = document.getElementById("foto-container");
   let region = myForm["select-region"].value;
   let comuna = myForm["select-comuna"].value;
   let tipo = myForm["tipo"].value;
@@ -149,9 +119,8 @@ const validateForm = () => {
   let edad = myForm["edad"].value;
   let medida = myForm["uni_medida"].value;
   let fecha = myForm["fecha_dispo"].value;
-  let sector = myForm["Sector"].value;
-  let contactar = myForm["contactar_por"].value;
-  let contactar_texto = myForm["comments"].value;
+  let sector = myForm["sector"].value;
+  let contactar = document.getElementById("contactar_container");
 
   // variables auxiliares de validación y función.
   let invalidInputs = [];
@@ -169,7 +138,7 @@ const validateForm = () => {
     setInvalidInput("Comuna");
   }
   if (!validateSector(sector)) {
-    setInvalidInput("El sector no puede superar los 100 caracteres");
+    setInvalidInput("Sector");
   }
   if (!validateName(name)) {
     setInvalidInput("Nombre");
@@ -180,44 +149,27 @@ const validateForm = () => {
   if (!validatePhoneNumber(phoneNumber)) {
     setInvalidInput("Número");
   }
-  if (!validateContact(contactar, contactar_texto)) {
+  if (!validateContact(contactar)) {
     setInvalidInput("Contactar");
   }
     if (!validateSelect(tipo)) {
     setInvalidInput("Tipo");
   }
-  if (!validateSelect(cantidad)) {
+  if (!validateEdad_Cantidad(cantidad)) {
     setInvalidInput("Cantidad");
   }
-    if (!validateEdad(edad)) {
+  if (!validateEdad_Cantidad(edad)) {
     setInvalidInput("Edad");
   }
   if (!validateSelect(medida)) {
     setInvalidInput("Unidad Medida Edad");
   }
-    if (!validateSelect(fecha)) {
+  if (!validateFecha(fecha)) {
     setInvalidInput("Fecha");
   }
-  if (!validateFotos(fotos)) {
+  if (!validateFiles(fotos)) {
     setInvalidInput("Fotos");
   }
-
-  function changeArguments() {
-  const courseSelect = document.getElementById("contactar_por");
-  const reasonLabel = document.querySelector("label[for='reason']");
-  const reasonTextarea = document.getElementById("comments");
-  
-  if (courseSelect.value !== "") {
-      reasonLabel.style.display = "block";
-      reasonTextarea.style.display = "block";
-  } else {
-      reasonLabel.style.display = "none";
-      reasonTextarea.style.display = "none";
-  }
-}
-
-document.getElementById("contactar_por").addEventListener("change", changeArguments);
-
 
    // finalmente mostrar la validación
   let validationBox = document.getElementById("val-box");
@@ -251,21 +203,21 @@ document.getElementById("contactar_por").addEventListener("change", changeArgume
     validationListElem.textContent = "";
 
     // aplicar estilos de éxito
-    validationBox.style.backgroundColor = "#ddffdd";
-    validationBox.style.borderLeftColor = "#4CAF50";
+    validationBox.style.backgroundColor = "#f09a73ff";
+    validationBox.style.borderLeftColor = "#f07d30ff";
 
     // Agregar botones para enviar el formulario o volver
     let submitButton = document.createElement("button");
-    submitButton.innerText = "“Sí, estoy seguro";
-    submitButton.style.marginRight = "10px";
+    submitButton.innerText = "Sí, estoy seguro";
+    submitButton.style.marginRight = "11px";
     submitButton.addEventListener("click", () => {
       // myForm.submit();
       // no tenemos un backend al cual enviarle los datos
       validationMessageElem.innerText = "Hemos recibido la información de adopción, muchas gracias y suerte!";
       validationListElem.textContent = "";
 
-      validationBox.style.backgroundColor = "#ddffdd";
-      validationBox.style.borderLeftColor = "#4CAF50";
+      validationBox.style.backgroundColor = "#f09a73ff";
+      validationBox.style.borderLeftColor = "#f39657ff";
 
       // Crear botón para volver a la portada
       let homeButton = document.createElement("button");
@@ -292,6 +244,108 @@ document.getElementById("contactar_por").addEventListener("change", changeArgume
   }
 };
 
+
+const agregarFotos = () => {
+  let container = document.getElementById("foto-container");
+  let files = container.querySelectorAll("input[type='file']");
+
+  let lengthValid = 1 <= files.length && files.length <= 4;
+
+  if (lengthValid) {
+    let input = document.createElement("input");
+    input.type = "file";
+    input.name = "files"; 
+    container.appendChild(input);
+  }
+  // oculta boton
+  if (files.length == 4) {
+    let addBtn = document.getElementById("add-foto-btn");
+    addBtn.style = "display: none;";
+  }
+};
+
+// bloque para cada contacto
+const agregarContacto = () => {
+  let div = document.getElementById("contactar_container");
+  let blocks = div.querySelectorAll(".contactar_block");
+
+  // colocamos restricción de 5 bloques
+  if (blocks.length <= 5) {
+    let block = document.createElement("div");
+    block.className = "contactar_block";
+
+    block.innerHTML = `
+      <select name="contactar_por">
+        <option value="">-- Selecciona una opción para contactar --</option>
+        <option>Whatsapp</option>
+        <option>Telegram</option>
+        <option>X</option>
+        <option>Instagram</option>
+        <option>Tiktok</option>
+        <option>Otra</option>
+      </select>
+      <label style="display:none;">Información de contacto (ID / URL)</label>
+      <textarea name="comments" rows="4" cols="40" style="display:none;"></textarea>
+    `;
+
+    // evento para el select dentro del bloque
+    let select = block.querySelector("select");
+    let label = block.querySelector("label");
+    let textarea = block.querySelector("textarea");
+
+    select.addEventListener("change", () => {
+      if (select.value !== "") {
+        label.style.display = "block";
+        textarea.style.display = "block";
+      } else {
+        label.style.display = "none";
+        textarea.style.display = "none";
+      }
+    });
+
+    div.appendChild(block);
+  }
+  // oculta boton
+  if (blocks.length == 5) {
+    let addBtn = document.getElementById("add-contacto-btn");
+    addBtn.style = "display: none;";
+  }
+};
+
+const actualizarFecha = () => {
+  let fecha_dispo = document.getElementById("fecha_dispo");
+  let hoy = new Date();
+
+  hoy.setHours(hoy.getHours() + 3);
+
+  const AAAA = hoy.getFullYear();
+  const MM = rellenarCeros(hoy.getMonth() + 1);
+  const DD =  rellenarCeros(hoy.getDate());
+  const HH = rellenarCeros(hoy.getHours());
+  const mm =  rellenarCeros(hoy.getMinutes());
+
+  fecha_dispo.value = AAAA + "-" + MM + "-" + DD + "T" + HH + ":" + mm;
+};
+
+const rellenarCeros = (numero) => {
+  let respuesta = "";
+    if (numero < 10) {
+      respuesta = "0" + numero;
+      return respuesta;
+    } else {
+      return String(numero);
+    }
+};
+
+document.getElementById("add-foto-btn").addEventListener("click", agregarFotos);
+document.getElementById("add-contacto-btn").addEventListener("click", agregarContacto);
+
+window.onload = () => {
+  poblarRegiones();
+  updateComunas();
+  agregarContacto();
+  actualizarFecha();
+}; 
 
 let submitBtn = document.getElementById("submit-btn");
 submitBtn.addEventListener("click", validateForm);
