@@ -19,7 +19,7 @@
       <form name="myForm">
         <table>
           <tr>
-            <th>¿Dónde?</th>
+            <th colspan="2">¿Dónde?</th>
           </tr>
           <tr>
             <td><label for="select-region">Región</label></td>
@@ -42,7 +42,7 @@
           <tr>
             <td>Sector</td>
             <td>
-              <input type="text" name="Sector" id="Sector" maxlength="100" />
+              <input type="text" name="sector" id="sector" maxlength="100" />
             </td>
           </tr>
         </table>
@@ -52,7 +52,7 @@
         <!-- Segunda tabla -->
         <table>
           <tr>
-            <th>Contacto de esta publicación</th>
+            <th colspan="2">Contacto de esta publicación</th>
           </tr>
           <tr>
             <td><label for="nombre">Nombre</label></td>
@@ -77,29 +77,20 @@
           <tr>
             <td>Contactar por</td>
             <td>
-              <select name="contactar_por" id="contactar_por">
-                <option value="">-- Selecciona una opción para contactar --</option>
-                <option>Whatsapp</option>
-                <option>Telegram</option>
-                <option>X</option>
-                <option>Instagram</option>
-                <option>Tiktok</option>
-                <option>Otra</option>
-              </select>
-              
-            <label for="reason" style="display: none;">Información de contacto (ID / URL)</label>
-            <textarea name="comments" id="comments" rows="4" cols="50" style="display: none;"></textarea><br>
-            </td>
+              <div id="contactar_container">
+                <div class="contactar_block">
+                </div>
+              </div>
+              <button type="button" id="add-contacto-btn">+</button>
           </tr>
         </table>
-        
 
         <br />
 
         <!-- Tercera tabla -->
         <table>
           <tr>
-            <th>¿Qué mascota ofrece en adopción?</th>
+            <th colspan="2">¿Qué mascota ofrece en adopción?</th>
           </tr>
           <tr>
             <td><label for="tipo">tipo</label></td>
@@ -115,16 +106,14 @@
           <tr>
             <td>Cantidad</td>
             <td>
-              <input type="number" name="cantidad" id="cantidad"
-                minlength="1" required/>
+              <input type="number" name="cantidad" id="cantidad" min="1" required/>
             </td>
           </tr>
 
           <tr>
             <td>Edad</td>
             <td>
-              <input type="number" name="edad" id="edad"
-                minlength="1" required />
+              <input type="number" name="edad" id="edad" min="1" required/>
             </td>
           </tr>
 
@@ -156,7 +145,10 @@
           <tr>
             <td>Foto</td>
             <td>
-              <input type="file" name="files" id="files" required />
+              <div id="foto-container">
+                  <input type="file" name="files" id="files" required />
+              </div>
+              <button type="button" id="add-foto-btn">Agregar otra foto</button>
             </td>
           </tr>
         </table>
@@ -171,6 +163,7 @@
 
     <!-- Carga primero los datos, luego la lógica -->
     <script src="../js/region_comuna.js"></script>
+    <script src="../js/update_region_comuna.js"></script>
     <script src="../js/agregar.js"></script>
   </body>
 </html>

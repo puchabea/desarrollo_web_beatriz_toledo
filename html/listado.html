@@ -1,31 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
+        <meta charset="UTF-8">
         <title>Listado de Avisos de adopción</title>
         <link rel="stylesheet" type="text/css" href="../css/listado.css"> 
     </head>
     <body>
         <h1>Listado de Avisos de adopción</h1>
         <br>
-        <table>
-        <tr>
-            <th>Fecha publicación</th>
-            <th>Fecha Entrega</th>
-            <th>Comuna</th>
-            <th>Sector</th>
-            <th>Cantidad Tipo Edad</th>
-            <th>Nombre Contacto</th>  
-            <th>Total Fotos</th>          
-        </tr>
-        <tr>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-        </tr>
+        <table class="tabla_adopciones">
+            <tr>
+                <th>Fecha publicación</th>
+                <th>Fecha Entrega</th>
+                <th>Comuna</th>
+                <th>Sector</th>
+                <th>Cantidad Tipo Edad</th>
+                <th>Nombre Contacto</th>  
+                <th>Total Fotos</th>         
+            </tr>
+            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
+                <td><p>2025-06-18</p>12:00</td>
+                <td><p>2025-09-02</p>14:00</td>
+                <td>Ñuñoa</td>
+                <td>Plaza Egaña</td>
+                <td>2, Gato, 4 meses</td>
+                <td>Arturo Navarrete</td>
+                <td>1</td>
+            </tr>
+            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
+                <td><p>2025-06-18</p>18:45</td>
+                <td><p>2025-09-01</p>12:00</td>
+                <td>Rengo</td>
+                <td>Arturo Prat</td>
+                <td>1, Perro, 6 meses</td>
+                <td>Vicente Garrido</td>
+                <td>3</td>
+            </tr>
+            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
+                <td><p>2025-06-18</p>08:45</td>
+                <td><p>2025-08-04</p>11:00</td>
+                <td>Viña del Mar</td>
+                <td>Reñaca Alto</td>
+                <td>3, Gato, 2 meses</td>
+                <td>Beatriz Toledo</td>
+                <td>2</td>
+            </tr>
+            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
+                <td><p>2025-07-18</p>20:10</td>
+                <td><p>2025-09-10</p>09:00</td>
+                <td>La Florida</td>
+                <td>Los Quillaye</td>
+                <td>1, Perro, 4 meses</td>
+                <td>Rakhel Gomez</td>
+                <td>2</td>
+            </tr>
+            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
+                <td><p>2025-07-18</p>10:10</td>
+                <td><p>2025-08-10</p>14:00</td>
+                <td>Los Lagos</td>
+                <td>Mirasol</td>
+                <td>2, Perro, 6 meses</td>
+                <td>Antonio Muñoz</td>
+                <td>2</td>
+            </tr>
         </table>
     </body>
 </html>
