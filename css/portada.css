@@ -1,3 +1,10 @@
+div {
+  display: flex;
+  justify-content: center;
+  gap: 15px;   /* espacio entre botones */
+  margin: 20px 0;
+}
+
 .botones {
   background-color: orangered;
   border: none;
@@ -9,19 +16,47 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+  border-radius: 6px;
 }
 
-
-table, th, td {
-    border: 2px solid;
-}
-
+/* Centramos la tabla */
 table {
   border-collapse: collapse;
+  margin: 20px auto; 
+  width: 60%; 
+  text-align: center;
 }
 
-th, td {
+/* Encabezados */
+th {
+  background-color: orangered;
+  color: white;
+  font-size: 1.1em;
+  padding: 12px;
+}
+
+
+/* Filas */
+td {
   padding: 10px;
+}
+
+/* Bordes */
+table, th, td {
+  border: 2px solid rgb(3, 3, 3);
+}
+
+/* Centrar títulos y párrafos iniciales */
+h1, h2, p {
+  text-align: center;
+}
+
+/* Bienvenida más llamativa */
+h1 {
+  font-size: 3em;  
+  color: orangered;        
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 #foto1 {
@@ -29,7 +64,7 @@ th, td {
   margin: 0 auto;
 }
 
-#fotos {
+#foto2, #foto3, #foto4, #foto5 {
   width: 200px;
   margin: 0 auto;
 }

@@ -1,11 +1,51 @@
-table, th, td {
-    border: 2px solid;
+/* Body y título */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  text-align: center;
 }
 
+h1 {
+  color: orangered;
+  font-size: 2.2em;
+  margin-bottom: 20px;
+}
+
+/* Tablas */
 table {
   border-collapse: collapse;
+  margin: 0 auto 20px auto;
+  width: 70%;
+  text-align: left; /* texto de celdas alineado a la izquierda */
 }
 
 th, td {
   padding: 10px;
+  border: 2px solid;
+}
+
+th {
+  background-color: orangered;
+  color: white;
+  font-size: 1.1em;
+  border: 2px solid rgb(0, 0, 0);
+}
+
+/* Botones generales */
+button, .botones {
+  background-color: orangered;
+  border: none;
+  color: white;
+  padding: 10px 20px; /* botones más compactos */
+  margin: 10px 5px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Contenedor principal */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centrar contenido */
 }
