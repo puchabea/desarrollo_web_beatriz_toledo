@@ -167,7 +167,6 @@ def agregar_contacto(aviso_id, tipo, valor):
     session.commit()
     session.close()
 
-# para listado
 def get_all_avisos():
     session = SessionLocal()
     avisos = (
