@@ -19,6 +19,10 @@ CREATE SCHEMA IF NOT EXISTS `tarea2` DEFAULT CHARACTER SET utf8 ;
 USE `tarea2` ;
 
 -- -----------------------------------------------------
+-- user
+-- -----------------------------------------------------
+GRANT ALL ON tarea2.* TO cc5002@localhost;
+-- -----------------------------------------------------
 -- Table `tarea2`.`region`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tarea2`.`region` (
