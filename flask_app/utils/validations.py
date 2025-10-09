@@ -54,15 +54,6 @@ def validate_contactos(values):
         if not validate_contactos(value):
             return False
     return True
-
-def validate_identificador(value):
-    return len(value) >= 4 and len(value) <= 50
-
-def validate_identificadores(values):
-    for value in values:
-        if not validate_identificador(value):
-            return False
-    return True
     
 def validate_tipo(value):
     if value:
