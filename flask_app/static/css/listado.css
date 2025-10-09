@@ -5,7 +5,7 @@ table, th, td {
 table {
   border-collapse: collapse;
   margin: 20px auto;   /* centramos la tabla */
-  width: 90%;          /* ocupa gran parte de la página */
+  width: 70%;          /* ocupa gran parte de la página */
   text-align: center;
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -44,3 +44,31 @@ tr.clickable:hover {
 .tabla_adopciones, .tabla_adopciones th, .tabla_adopciones td {
   border: 2px solid orangered;
 }
+
+img {
+    max-width: 120px;
+    border-radius: 8px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px; /* separa de la tabla */
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 30px;    
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
