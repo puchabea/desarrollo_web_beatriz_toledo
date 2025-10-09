@@ -211,21 +211,23 @@ const validateForm = () => {
     submitButton.innerText = "Sí, estoy seguro";
     submitButton.style.marginRight = "11px";
     submitButton.addEventListener("click", () => {
-      // myForm.submit();
+      validationMessageElem.innerText = "Enviando aviso...";
+      validationBox.hidden = false;
+      myForm.submit();
       // no tenemos un backend al cual enviarle los datos
-      validationMessageElem.innerText = "Hemos recibido la información de adopción, muchas gracias y suerte!";
-      validationListElem.textContent = "";
+      // validationMessageElem.innerText = "Hemos recibido la información de adopción, muchas gracias y suerte!";
+      //validationListElem.textContent = "";
 
       validationBox.style.backgroundColor = "#f09a73ff";
       validationBox.style.borderLeftColor = "#f39657ff";
 
       // Crear botón para volver a la portada
-      let homeButton = document.createElement("button");
-      homeButton.innerText = "Volver a la portada";
-      homeButton.addEventListener("click", () => {
-        window.location.href = "portada.html"; 
-      });
-      validationListElem.appendChild(homeButton);
+      //let homeButton = document.createElement("button");
+      //homeButton.innerText = "Volver a la portada";
+      //homeButton.addEventListener("click", () => {
+      //  window.location.href = "portada.html"; 
+      //});
+      //validationListElem.appendChild(homeButton);
     });
 
     let backButton = document.createElement("button");
