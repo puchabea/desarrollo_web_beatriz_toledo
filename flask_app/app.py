@@ -48,7 +48,6 @@ def agregar_aviso():
             aviso_id = db.create_aviso(region, comuna, sector, nombre, email, phone,
                                        tipo, cantidad, edad, uni_medida, fecha_dispo, descripcion)
             
-            print("hola")
             if aviso_id is None:
                 return render_template("agregar.html", error="Error al crear el aviso")
 
