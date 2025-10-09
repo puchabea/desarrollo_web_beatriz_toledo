@@ -42,7 +42,7 @@ def validate_tel(value):
         r = r'/^\+\d{3}\.\d{8}$/'
         return bool(re.match(r, value))
 
-def validate_contactarPor(value):  # formato 
+def validate_contactarPor(value): 
     if value:
         if value.lower() in ["whatsapp", "telegram", "instagram", "X", "tikTok", "otra"]:
             return True

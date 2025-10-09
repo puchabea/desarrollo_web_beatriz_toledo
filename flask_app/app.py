@@ -22,7 +22,6 @@ def portada():
 
 @app.route("/agregar_aviso", methods=["GET","POST"])
 def agregar_aviso():
-    print(">>> enviando form")
     if request.method == "POST":
         region = request.form.get("select-region")
         comuna = request.form.get("select-comuna")

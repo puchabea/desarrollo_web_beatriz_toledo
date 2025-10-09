@@ -200,8 +200,6 @@ def get_aviso_by_id(aviso_id):
     session.close()
     return aviso
 
-
-# lo de paginar(?)
 def get_paginated_avisos(offset, limit):
     session = SessionLocal()
     query = session.query(AvisoAdopcion).options(
