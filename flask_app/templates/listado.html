@@ -1,68 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>Listado de Avisos de adopción</title>
-        <link rel="stylesheet" type="text/css" href="../static/css/listado.css"> 
-    </head>
-    <body>
-        <h1>Listado de Avisos de adopción</h1>
-        <br>
-        <table class="tabla_adopciones">
-            <tr>
-                <th>Fecha publicación</th>
-                <th>Fecha Entrega</th>
-                <th>Comuna</th>
-                <th>Sector</th>
-                <th>Cantidad Tipo Edad</th>
-                <th>Nombre Contacto</th>  
-                <th>Total Fotos</th>         
-            </tr>
-            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
-                <td><p>2025-06-18</p>12:00</td>
-                <td><p>2025-09-02</p>14:00</td>
-                <td>Ñuñoa</td>
-                <td>Plaza Egaña</td>
-                <td>2, Gato, 4 meses</td>
-                <td>Arturo Navarrete</td>
-                <td>1</td>
-            </tr>
-            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
-                <td><p>2025-06-18</p>18:45</td>
-                <td><p>2025-09-01</p>12:00</td>
-                <td>Rengo</td>
-                <td>Arturo Prat</td>
-                <td>1, Perro, 6 meses</td>
-                <td>Vicente Garrido</td>
-                <td>3</td>
-            </tr>
-            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
-                <td><p>2025-06-18</p>08:45</td>
-                <td><p>2025-08-04</p>11:00</td>
-                <td>Viña del Mar</td>
-                <td>Reñaca Alto</td>
-                <td>3, Gato, 2 meses</td>
-                <td>Beatriz Toledo</td>
-                <td>2</td>
-            </tr>
-            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
-                <td><p>2025-07-18</p>20:10</td>
-                <td><p>2025-09-10</p>09:00</td>
-                <td>La Florida</td>
-                <td>Los Quillaye</td>
-                <td>1, Perro, 4 meses</td>
-                <td>Rakhel Gomez</td>
-                <td>2</td>
-            </tr>
-            <tr class="clickable" onclick="window.location='informacion_adopcion.html'">
-                <td><p>2025-07-18</p>10:10</td>
-                <td><p>2025-08-10</p>14:00</td>
-                <td>Los Lagos</td>
-                <td>Mirasol</td>
-                <td>2, Perro, 6 meses</td>
-                <td>Antonio Muñoz</td>
-                <td>2</td>
-            </tr>
-        </table>
-    </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Adopciones</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/listado.css')}}"> 
+</head>
+<body>
+
+  <h1>Listado de Avisos de Adopción</h1>
+
+  <table class="tabla_adopciones">
+    <thead>
+      <tr>
+        <th>Fecha Publicación</th>
+        <th>Fecha Entrega</th>
+        <th>Comuna</th>
+        <th>Sector</th>
+        <th>Cantidad Tipo Edad</th>
+        <th>Nombre</th>
+        <th>Contacto</th>
+        <th>Total Fotos</th>
+        <th>Foto Ejemplo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for aviso in avisos %}
+      <tr class="clickable" data-url="{{ url_for('info_listado', aviso_id=aviso.id) }}">
+        <td>{{ aviso.fecha_ingreso}}</td>
+        <td>{{ aviso.fecha_entrega}}</td>
+        <td>{{ aviso.comuna.nombre }}</td>
+        <td>{{ aviso.sector }}</td>
+        <td>{{ aviso.cantidad }} {{ aviso.tipo}} {{ aviso.edad }} {{ "meses" if aviso.unidad_medida == "m" else "años" }}</td>
+        <td>{{ aviso.nombre }}</td>
+        <td>
+          {% if aviso.contactos %}
+            <ul>
+              {% for c in aviso.contactos %}
+                <li>{{ c.nombre}}: {{ c.identificador }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            Sin contactos
+          {% endif %}
+        </td>
+        <td>{{ aviso.fotos|length }}</td>
+        <td>
+          {% if aviso.fotos %}
+            <img src="{{ url_for('static', filename='uploads/' + aviso.fotos[0].nombre_archivo) }}" alt="foto mascota">
+          {% else %}
+            Sin foto
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+
+      <div class="pagination-container">
+        <div class="pagination">
+          {% if page > 1 %}
+            <a href="{{ url_for('listar_adopciones', page=page-1) }}">Anterior</a>
+          {% endif %}
+
+          <span>Página {{ page }} de {{ total_pages }}</span>
+
+          {% if page < total_pages %}
+            <a href="{{ url_for('listar_adopciones', page=page+1) }}">Siguiente</a>
+          {% endif %}
+        </div>
+      </div>
+    </tbody>
+  </table>
+  <script lang="javascript" src="{{ url_for('static', filename='js/listado.js') }}" ></script> 
+</body>
 </html>

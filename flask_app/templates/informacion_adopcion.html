@@ -1,130 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-      <meta charset="UTF-8">
-      <title>Adopción 1</title>
-      <link rel="stylesheet" type="text/css" href="../static/css/informacion_adopcion.css">
-    </head>
-    <body>
-        <h1>Información de adopción</h1>
-        <br>
+<head>
+  <meta charset="UTF-8">
+  <title>Adopción {{ aviso.id }}</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/informacion_adopcion.css') }}">
+</head>
+<body>
+  <h1>Información de adopción</h1>
+  <br>
 
-        <!-- Primera tabla -->
-        <table>
-          <tr>
-            <th colspan="2">¿Dónde?</th>
-          </tr>
-          <tr>
-            <td>Región</td>
-            <td>Santiago</td>
-          </tr>
+  <!-- Primera tabla -->
+  <table>
+    <tr>
+      <th colspan="2">¿Dónde?</th>
+    </tr>
+    <tr>
+      <td>Región</td>
+      <td>{{ aviso.comuna.region.nombre }}</td>
+    </tr>
+    <tr>
+      <td>Comuna</td>
+      <td>{{ aviso.comuna.nombre }}</td>
+    </tr>
+    <tr>
+      <td>Sector</td>
+      <td>{{ aviso.sector }}</td>
+    </tr>
+  </table>
 
-          <tr>
-            <td>Comuna</td>
-            <td>Ñuñoa</td>
-          </tr>
+  <br />
 
-          <tr>
-            <td>Sector</td>
-            <td>Plaza Egaña</td>
-          </tr>
-        </table>
-
-        <br />
-
-        <!-- Segunda tabla -->
-         <table>
-          <tr>
-            <th colspan="2">Contacto de esta publicación</th>
-          </tr>
-          <tr>
-            <td>Nombre</td>
-            <td>Arturo Navarrete</td>
-          </tr>
-
-          <tr>
-            <td>Email</td>
-            <td>arturonavarrete@gmail.com</td>
-          </tr>
-
-          <tr>
-            <td>Número de celular</td>
-            <td>+569.12345678</td>
-          </tr>
-
-          <tr>
-            <td>Contactar por</td>
-            <td>
-              <div id="contactar_container">
-                <div class="contactar_block">
-                  Telegram
-                  <br>
-                  @arturo_n
-                </div>
-              </div>
-            </td>
-          </tr>
-        </table>
-
-        <br />
-
-        <!-- Tercera tabla -->
-        <table>
-          <tr>
-            <th colspan="2">¿Qué mascota ofrece en adopción?</th>
-          </tr>
-          <tr>
-            <td>tipo</td>
-            <td>Gato</td>
-          </tr>
-
-          <tr>
-            <td>Cantidad</td>
-            <td>2</td>
-          </tr>
-
-          <tr>
-            <td>Edad</td>
-            <td>3</td>
-          </tr>
-
-          <tr>
-            <td>Unidad medida edad</td>
-            <td>
-              Meses
-            </td>
-          </tr>
-
-          <tr>
-            <td>Fecha disponible para entrega</td>
-            <td><p>2025-09-02</p><p>14:00</p></td>
-          </tr>
-
-          <tr>
-            <td>Descripción</td>
-            <td>
-              Uno es naranjo con blanco y el otro es blanco de ojos azules, <br>
-              son hogareños y muy simpáticos c:
-            </td>
-          </tr>
-
-          <tr>
-            <td>Foto</td>
-            <td><img id="foto" src="../static/img/2gatos4meses.jpg" alt="Dos gatos de 4 meses" onclick="mostrarFoto(this)">
-            <div id="emergente" class="emergente">
-                <button id="cerrar" class="cerrar">Cerrar</button>
-                <img id="emergente-img" class="emergente-img" src="" alt="Imagen ampliada">
-            </div>
-            </td>
-
-          </tr>
-        </table>
-
-        <div class="botones-container">
-          <a href="listado.html" class="botones">Volver al listado</a>
-          <a href="portada.html" class="botones">Volver a la portada</a>
+  <!-- Segunda tabla -->
+  <table>
+    <tr>
+      <th colspan="2">Contacto de esta publicación</th>
+    </tr>
+    <tr>
+      <td>Nombre</td>
+      <td>{{ aviso.nombre }}</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>{{ aviso.email }}</td>
+    </tr>
+    <tr>
+      <td>Número de celular</td>
+      <td>{{ aviso.telefono }}</td>
+    </tr>
+    <tr>
+      <td>Contactar por</td>
+      <td>
+        <div id="contactar_container">
+          {% for c in aviso.contactos %}
+          <div class="contactar_block">
+            {{ c.nombre }}<br>
+            {{ c.identificador }}
+          </div>
+          {% endfor %}
         </div>
+      </td>
+    </tr>
+  </table>
 
-        <script src="../static/js/informacion_adopcion.js"></script>
-    </body>
+  <br />
+
+  <!-- Tercera tabla -->
+  <table>
+    <tr>
+      <th colspan="2">¿Qué mascota ofrece en adopción?</th>
+    </tr>
+    <tr>
+      <td>Tipo</td>
+      <td>{{ aviso.tipo }}</td>
+    </tr>
+    <tr>
+      <td>Cantidad</td>
+      <td>{{ aviso.cantidad }}</td>
+    </tr>
+    <tr>
+      <td>Edad</td>
+      <td>{{ aviso.edad }}</td>
+    </tr>
+    <tr>
+      <td>Unidad medida edad</td>
+      <td>{{ "Meses" if aviso.unidad_medida == "m" else "Años" }}</td>
+    </tr>
+    <tr>
+      <td>Fecha disponible para entrega</td>
+      <td>
+        <p>{{ aviso.fecha_entrega.strftime("%Y-%m-%d") }}</p>
+        <p>{{ aviso.fecha_entrega.strftime("%H:%M") }}</p>
+      </td>
+    </tr>
+    <tr>
+      <td>Descripción</td>
+      <td>{{ aviso.descripcion }}</td>
+    </tr>
+    <tr>
+      <td>Foto</td>
+      <td>
+        {% if aviso.fotos %}
+        <img id="foto" 
+             src="{{ url_for('static', filename='uploads/' + aviso.fotos[0].nombre_archivo) }}" 
+             alt="Foto mascota" 
+             onclick="mostrarFoto(this)">
+        <div id="emergente" class="emergente">
+          <button id="cerrar" class="cerrar">Cerrar</button>
+          <img id="emergente-img" class="emergente-img" src="" alt="Imagen ampliada">
+        </div>
+        {% else %}
+        No hay fotos disponibles
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+
+  <div class="botones-container">
+    <a href="{{ url_for('listar_adopciones') }}" class="botones">Volver al listado</a>
+    <a href="{{ url_for('portada') }}" class="botones">Volver a la portada</a>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/informacion_adopcion.js') }}"></script>
+</body>
 </html>

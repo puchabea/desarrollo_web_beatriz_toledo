@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title> Compañía Peluda </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/portada.css') }}">
+    </head>
+    <body>
+        <h1> Bienvenido a "Compañía Peluda"</h1>
+        <p>En Compañía Peluda queremos que sea mas fácil adoptar perros y gatos
+            para ello te ofrecemos un listado de los animales en adopción y muchas
+            cosas más! 
+        </p>
+        <h2> Seleciona lo que quieras hacer/ver: </h2>
+        <div>
+            <a href="{{ url_for('agregar_aviso') }}" class="botones">Agregar aviso de adopción</a>
+            <a href="{{ url_for('listar_adopciones') }}" class="botones">Listado de adopciones</a>
+            <a href="{{ url_for('estadisticas') }}" class="botones">Estadísticas</a>
+        </div>
+        <hr>
+        <h2> Aquí tienes los últimos 5 avisos de adopción:</h2>
+        <table>
+            <tr>
+                <th>Fecha de publicación</th>
+                <th>Comuna</th>
+                <th>Sector</th>
+                <th>Cantidad Tipo Edad</th>
+                <th>Foto</th>
+            </tr>
+            {% for aviso in avisos %}
+            <tr>
+                <td>{{ aviso.fecha_ingreso }}</td>
+                <td>{{ aviso.comuna.nombre }}</td>
+                <td>{{ aviso.sector }}</td>
+                <td>{{ aviso.cantidad }} {{ aviso.tipo }} {{ aviso.edad }} {{ "meses" if aviso.unidad_medida == "m" else "años" }} </td>
+                <td>
+                    {% if aviso.fotos %}
+                    <img src="{{ url_for('static', filename='uploads/' + aviso.fotos[0].nombre_archivo) }}"
+                        alt="Foto de {{ aviso.tipo }}" width="100">
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

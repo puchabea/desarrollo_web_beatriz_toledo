@@ -16,7 +16,7 @@
       </div>
 
       <!-- Primera tabla -->
-      <form name="myForm">
+      <form name="myForm" id="myForm" method="POST" action="{{ url_for('agregar_aviso') }}" enctype="multipart/form-data">
         <table>
           <tr>
             <th colspan="2">¿Dónde?</th>
@@ -138,7 +138,7 @@
           <tr>
             <td>Descripción</td>
             <td>
-              <textarea rows="10" cols="50"></textarea>
+              <textarea name="descripcion" id="descripcion" rows="10" cols="50"></textarea>
             </td>
           </tr>
 
@@ -162,8 +162,8 @@
     </div>
 
     <!-- Carga primero los datos, luego la lógica -->
-    <script src="../static/js/region_comuna.js"></script>
-    <script src="../static/js/update_region_comuna.js"></script>
-    <script src="../static/js/agregar.js"></script>
+    <script lang="javascript" src="{{ url_for('static', filename='js/region_comuna.js') }}"></script> 
+    <script lang="javascript" src="{{ url_for('static', filename='js/update_region_comuna.js') }}"></script> 
+    <script lang="javascript" src="{{ url_for('static', filename='js/agregar.js') }}"></script> 
   </body>
 </html>
