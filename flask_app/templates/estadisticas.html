@@ -8,16 +8,21 @@
     <body>
         <h1>Estadísticas</h1>
         <h2>Grafico de línea</h2>
-        <img id="foto1" src="{{ url_for('static', filename='uploads/linea.jpg') }}" alt="Gráfico de línea de estadísticas"> 
+        <div id="grafico1" style="width: 80%; height: 400px; margin: 0 auto;"></div> 
 
         <h2>Grafico de torta</h2>
-        <img id="foto2" src="{{ url_for('static', filename='uploads/torta.jpg') }}" alt="Gráfico de torta de estadísticas"> 
+        <div id="grafico2" style="width: 80%; height: 400px; margin: 0 auto;"></div> 
 
         <h2>Grafico de barras</h2>
-        <img id="foto3" src="{{ url_for('static', filename='uploads/barras.jpg') }}" alt="Gráfico de barras de estadísticas"> 
+        <div id="grafico3" style="width: 90%; height: 400px; margin: 0 auto;"></div> 
 
         <br>
         
     <a href="{{ url_for('portada') }}" class="botones">Volver a la portada</a>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="{{ url_for('static', filename='js/estadisticas_lineas.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/estadisticas_torta.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/estadisticas_barras.js') }}"></script>
     </body>
 </html>
