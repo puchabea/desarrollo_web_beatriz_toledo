@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, Enum, BigInteger, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, Enum, BigInteger, ForeignKey, func
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, Session, joinedload
 from datetime import datetime
 DB_NAME = "tarea2"
@@ -211,5 +211,56 @@ def get_paginated_avisos(offset, limit):
     avisos = query.offset(offset).limit(limit).all()
     session.close()
     return avisos, total
+
+
+# --- funciones para estadisticas ---
+
+def get_avisos_por_dia():
+    session = SessionLocal()
+    avisos = session.query(AvisoAdopcion).all()
+
+    avisos_por_dia = {}
+    for aviso in avisos:
+        dia = str(aviso.fecha_ingreso.date())
+        if dia not in avisos_por_dia:
+            avisos_por_dia[dia] = 0
+        avisos_por_dia[dia] += 1
+
+    session.close()
+    return avisos_por_dia
+
+def get_avisos_por_tipo():
+    session = SessionLocal()
+    avisos = session.query(AvisoAdopcion).all()
+
+    avisos_por_tipo = {}
+    for aviso in avisos:
+        tipo = aviso.tipo.lower()
+        if tipo not in avisos_por_tipo:
+            avisos_por_tipo[tipo] = 0
+        avisos_por_tipo[tipo] += 1
+
+    session.close()
+    return avisos_por_tipo
+
+
+def get_avisos_por_mes():
+    session = SessionLocal()
+    cursor = session.query(AvisoAdopcion.tipo, AvisoAdopcion.id, AvisoAdopcion.fecha_ingreso).all()
+    avisos = list(range(12))
+
+    for i in range(12):
+        avisos[i] = {"Perros": 0, "Gatos": 0}
+
+    for tipo, id, fecha_ingreso in cursor:
+          mes = fecha_ingreso.month-1
+          if tipo == "perro":
+              avisos[mes]["Perros"] += 1
+          else:
+              avisos[mes]["Gatos"] += 1
+
+    session.close()
+    return avisos
+
 
 
