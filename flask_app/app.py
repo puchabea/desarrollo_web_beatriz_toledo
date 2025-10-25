@@ -1,5 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for, session
-from utils.validations import validate_aviso
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+from flask_cors import cross_origin
+from utils.validations import validate_aviso, validate_comentario
 from database import db
 from werkzeug.utils import secure_filename
 import hashlib
@@ -91,6 +92,85 @@ def info_listado(aviso_id):
         return render_template("informacion_adopcion.html", error="Aviso no encontrado")
     return render_template("informacion_adopcion.html", aviso=aviso)
 
+
+# --- estadisticas --
 @app.route("/estadisticas")
 def estadisticas():
     return render_template("estadisticas.html")
+
+
+@app.route("/get/avisos_por_dia", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_avisos_por_dia():
+    data_dic = db.get_avisos_por_dia()
+    data = []
+    for dia in data_dic:
+        cantidad = data_dic[dia]
+        registro = {
+            "dia": dia,
+            "cantidad": cantidad
+        }
+        data.append(registro)
+    return jsonify(data)
+
+@app.route("/get/avisos_por_tipo", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_avisos_por_tipo():
+    data_dict = db.get_avisos_por_tipo()
+    data = []
+    for tipo in data_dict:
+        cantidad = data_dict[tipo]
+        registro = {
+            "tipo": tipo,
+            "cantidad": cantidad
+        }
+        data.append(registro)
+
+    return jsonify(data)
+
+
+@app.route("/get/avisos_por_mes", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_avisos_por_mes():
+    dataPerros = list(range(12))
+    dataGatos = list(range(12))
+    avisos = db.get_avisos_por_mes()
+    for i in range(12):
+        dataPerros[i] = avisos[i]["Perros"]
+        dataGatos[i] = avisos[i]["Gatos"]
+
+    return jsonify({
+        "perros": dataPerros, 
+        "gatos": dataGatos
+        })
+
+
+# --- comentarios ---
+@app.route("/agregar_comentario/<int:aviso_id>", methods=["POST"])
+def agregar_comentario(aviso_id):
+    form = request.get_json()
+    nombre = form.get("nombre", "").strip()
+    texto = form.get("texto", "").strip()
+
+    if not validate_comentario(nombre, texto):
+        return jsonify({"status": "error", "message": "Datos inválidos"}), 400
+
+    db.agregar_comentario(aviso_id, nombre, texto)
+    return jsonify({"status": "ok", "message": "Comentario agregado correctamente"})
+
+    
+@app.route("/comentarios/<int:id>", methods=["GET"])
+def get_comentarios(id):
+    comentarios = db.get_comentarios_by_aviso(id)
+    data = []
+    for c in comentarios:
+        data.append({
+            "nombre": c.nombre,
+            "texto": c.texto,
+            "fecha": c.fecha.strftime("%Y-%m-%d")
+        })
+    return jsonify(data)
+
+
+
+

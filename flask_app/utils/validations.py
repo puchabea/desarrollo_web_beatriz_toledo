@@ -157,3 +157,17 @@ def validate_aviso(region, comuna, sector, nombre, email, tipo, cantidad, edad, 
         return False
     return True
 
+def validate_comentario_nombre(nombre):
+    if not nombre:
+        return False
+    nombre = nombre.strip()
+    return 3 <= len(nombre) <= 80
+
+def validate_comentario_texto(texto):
+    if not texto:
+        return False
+    texto = texto.strip()
+    return len(texto) >= 5
+
+def validate_comentario(nombre, texto):
+    return validate_comentario_nombre(nombre) and validate_comentario_texto(texto)

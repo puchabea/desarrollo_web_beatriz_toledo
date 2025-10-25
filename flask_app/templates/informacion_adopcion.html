@@ -45,7 +45,7 @@
     </tr>
     <tr>
       <td>Número de celular</td>
-      <td>{{ aviso.telefono }}</td>
+      <td>{{ aviso.celular }}</td>
     </tr>
     <tr>
       <td>Contactar por</td>
@@ -115,11 +115,33 @@
     </tr>
   </table>
 
+  <h2 id="titulo">Comentarios</h2>
+  <div id="comentarios"></div>
+
+  <div id="form-comentario">
+  <form name="form" id="form" method="post">
+    <label for="nombre">Nombre</label>
+    <input type="text" name="nombre" id="nombre" minlength="3" maxlength="80" required><br>
+
+    <label for="texto">Comentario</label>
+    <textarea name="texto" id="texto" rows="4" cols="50" minlength="5" required></textarea><br>
+
+    <button type="button" id="envio" onclick='agregarComentario({{ aviso.id }})'>Agregar comentario</button>
+    <p id="error-msg" style="color:red;"></p>
+  </form>
+  </div>
+
   <div class="botones-container">
     <a href="{{ url_for('listar_adopciones') }}" class="botones">Volver al listado</a>
     <a href="{{ url_for('portada') }}" class="botones">Volver a la portada</a>
   </div>
 
   <script src="{{ url_for('static', filename='js/informacion_adopcion.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/comentario.js') }}"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    cargarComentarios({{ aviso.id }});
+  });
+  </script>
 </body>
 </html>

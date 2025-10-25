@@ -53,7 +53,7 @@ class AvisoAdopcion(Base):
     comuna = relationship("Comuna", back_populates="avisos")
     fotos = relationship("Foto", back_populates="aviso", cascade="all, delete")
     contactos = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
-
+    comentarios = relationship("Comentario", back_populates="aviso", cascade="all, delete")
 
 class Foto(Base):
     __tablename__ = 'foto'
@@ -75,6 +75,17 @@ class ContactarPor(Base):
 
     aviso = relationship("AvisoAdopcion", back_populates="contactos")
 
+class Comentario(Base):
+    __tablename__ = 'comentario'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(DateTime, default=datetime.now)
+    aviso_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
+
+    aviso = relationship("AvisoAdopcion", back_populates="comentarios")
+    
 
 # --- Database Functions ---
 
@@ -191,7 +202,8 @@ def get_aviso_by_id(aviso_id):
         .options(
             joinedload(AvisoAdopcion.comuna).joinedload(Comuna.region),
             joinedload(AvisoAdopcion.fotos),
-            joinedload(AvisoAdopcion.contactos)
+            joinedload(AvisoAdopcion.contactos),
+            joinedload(AvisoAdopcion.comentarios)
         )
         .filter(AvisoAdopcion.id == aviso_id)
         .first()
@@ -261,6 +273,28 @@ def get_avisos_por_mes():
 
     session.close()
     return avisos
+
+# --- funciones para comentarios ---
+
+def agregar_comentario(aviso_id, nombre, texto):
+    session = SessionLocal()
+    comentario = Comentario(aviso_id=aviso_id, nombre=nombre, texto=texto)
+    session.add(comentario)
+    session.commit()
+    session.close()
+
+
+def get_comentarios_by_aviso(aviso_id):
+    session = SessionLocal()
+    comentarios = (
+        session.query(Comentario)
+        .filter(Comentario.aviso_id == aviso_id)
+        .all()
+    )
+    session.close()
+    return comentarios
+
+
 
 
 

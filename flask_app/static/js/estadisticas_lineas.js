@@ -1,4 +1,4 @@
-fetch("/api/avisos_por_dia")
+fetch("/get/avisos_por_dia")
   .then(response => {
     if (!response.ok) {
       throw new Error("Error al obtener datos del servidor");
