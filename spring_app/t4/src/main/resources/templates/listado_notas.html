@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluación de Avisos</title>
+    <link rel="stylesheet" th:href="@{/css/listado_notas.css}">
+</head>
+<body>
+
+<h1>Listado de Avisos de Adopción</h1>
+
+<table class="tabla_adopciones">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha publicación</th>
+            <th>Sector</th>
+            <th>Cantidad</th>
+            <th>Tipo</th>
+            <th>Edad</th>
+            <th>Comuna</th>
+            <th>Nota</th>
+            <th>Evaluar</th> 
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="aviso : ${avisos}">
+            <td th:text="${aviso.id}"></td>
+            <td th:text="${aviso.fechaPublicacion}"></td>
+            <td th:text="${aviso.sector}"></td>
+            <td th:text="${aviso.cantidad}"></td>
+            <td th:text="${aviso.tipo}"></td>
+            <td th:text="${aviso.edad}"></td>
+            <td th:text="${aviso.comuna}"></td>
+
+            <td class="col-promedio" th:text="${aviso.notaPromedio}"></td>
+
+            <td>
+                <button class="boton-evaluar"
+                        th:attr="data-id=${aviso.id}">
+                    Evaluar
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script th:src="@{/js/evaluar.js}"></script>
+
+</body>
+</html>
