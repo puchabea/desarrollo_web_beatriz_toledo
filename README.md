@@ -1,27 +1,22 @@
-# Tarea 3 – Gráficos y Comentarios
+# Tarea 4 – Evaluación de Avisos de Adopción
 
-Aplicación web para **agregar comentarios y visualizar gráficos de forma asíncrona y dinámica**, utilizando principalmente **AJAX** y **JavaScript**.
+Este proyecto extiende la aplicación anterior para agregar una nueva funcionalidad: evaluar avisos de adopción de manera rápida y dinámica, usando Spring Boot, Thymeleaf y llamadas asíncronas con JavaScript.
 
-## Gráficos
+## Acceder
+Para acceder se accede con http://localhost:8080/evaluaciones 
 
-- Implementé **tres estadísticas distintas**, cada una desarrollada **de manera independiente** con **JavaScript**.
-- Los datos se obtienen mediante **peticiones asincrónicas (AJAX)** al servidor Flask.
-- En **`app.py`** agregué rutas dedicadas que envían los datos en formato **JSON**, para que puedan ser procesados directamente por el front-end.
-- Los gráficos se renderizan dinámicamente en el navegador, y los **datos se actualizan automáticamente al cargar la página**, mostrando siempre la información más reciente.
+## Listado de Avisos
 
-
-## Comentarios
-
-- Creé un archivo **`comentario.js`** exclusivo para manejar la funcionalidad de los comentarios.
-- Modifiqué el **HTML** para incluir un formulario de entrada y un contenedor donde se muestran los comentarios.
-- Los comentarios se envían y cargan de manera **asíncrona**, sin necesidad de recargar la página.
-- Antes de enviarse, **los datos son validados** en el cliente (nombre, texto, longitud mínima, etc.).
-- También se implementó **manejo de errores en JavaScript**, mostrando mensajes claros en pantalla cuando los datos son inválidos o la solicitud falla.
+Se muestra una tabla con los datos principales de cada aviso, incluida una columna con su nota promedio (o “–” si no tiene evaluaciones).
 
 
-## Funcionalidad general
+## Evaluación
 
-La aplicación integra tanto visualización dinámica de datos como interacción del usuario:
-- Los gráficos se generan automáticamente y se actualizan sin recargar la página.
-- Los comentarios se validan y agregan en tiempo real.
+Cada aviso tiene un botón “Evaluar”, que pide una nota entre 1 y 7.
+El archivo evaluar.js valida la nota, la envía al backend con fetch y actualiza el promedio sin recargar la página.
 
+
+## Backend y Base de Datos
+
+Usando Spring Data JPA, las entidades AvisoAdopcion y Nota manejan la información en la base de datos.
+El endpoint /api/nota recibe la nota, la valida, la guarda y devuelve el nuevo promedio para mostrarlo de inmediato en la interfaz.
